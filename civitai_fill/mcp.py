@@ -7,25 +7,25 @@ import json
 
 PROTOCOL_VERSIONS = ("2025-06-18", "2025-03-26", "2024-11-05")
 SERVER_INFO = {"name": "civitai-comfyui", "title": "Civitai 填充", "version": "1.0.0"}
-INSTRUCTIONS = ("Civitai 填充：用 Civitai 作品参数填充当前 ComfyUI 工作流。写规则前先读 get_rule_spec 和 get_current_workflow，"
-                "用 dry_run_rule 试运行到没有提醒再 save_rule；apply_rule 会修改用户打开的工作流（可撤销）。")
+INSTRUCTIONS = ("Civitai 填充：用 Civitai 作品参数填充当前 ComfyUI 工作流。写规则前先读 civitai_rule_spec 和 civitai_workflow_snapshot，"
+                "用 civitai_dry_run_rule 试运行到没有提醒再 civitai_save_rule；civitai_apply_rule 会修改用户打开的工作流（可撤销）。")
 _url = {"type": "string", "description": "Civitai 作品地址，如 https://civitai.com/images/123"}
 _rule = {"source": {"type": "string", "description": "完整的规则 JS 源码"}, "id": {"type": "string", "description": "已保存的规则 ID"},
          "url": _url, "report": {"type": "object", "description": "civitai_inspect 的结果（与 url 二选一）"}}
 TOOLS = [
     {"name": "civitai_inspect", "description": "解析 Civitai 作品（经 MaiHub）：checkpoint、LoRA、生成参数、作品图片",
      "inputSchema": {"type": "object", "properties": {"url": _url}, "required": ["url"]}},
-    {"name": "get_rule_spec", "description": "映射规则规范（规则格式、report 字段、wf / h 接口）和内置示例规则",
+    {"name": "civitai_rule_spec", "description": "映射规则规范（规则格式、report 字段、wf / h 接口）和内置示例规则",
      "inputSchema": {"type": "object", "properties": {}}},
-    {"name": "get_current_workflow", "description": "用户 ComfyUI 页面当前工作流的快照：节点、控件、连线、本机模型列表",
+    {"name": "civitai_workflow_snapshot", "description": "用户 ComfyUI 页面当前工作流的快照：节点、控件、连线、本机模型列表",
      "inputSchema": {"type": "object", "properties": {}}},
-    {"name": "list_rules", "description": "已有规则（内置和已保存）", "inputSchema": {"type": "object", "properties": {}}},
-    {"name": "get_rule", "description": "读取一条规则的源码", "inputSchema": {"type": "object", "properties": {"id": {"type": "string"}}, "required": ["id"]}},
-    {"name": "dry_run_rule", "description": "在当前工作流上试运行规则，返回修改预览、提醒和缺少的模型，不改动工作流",
+    {"name": "civitai_list_rules", "description": "已有规则（内置和已保存）", "inputSchema": {"type": "object", "properties": {}}},
+    {"name": "civitai_get_rule", "description": "读取一条规则的源码", "inputSchema": {"type": "object", "properties": {"id": {"type": "string"}}, "required": ["id"]}},
+    {"name": "civitai_dry_run_rule", "description": "在当前工作流上试运行规则，返回修改预览、提醒和缺少的模型，不改动工作流",
      "inputSchema": {"type": "object", "properties": _rule}},
-    {"name": "save_rule", "description": "保存规则（ID 只能用小写字母、数字和 -）",
+    {"name": "civitai_save_rule", "description": "保存规则（ID 只能用小写字母、数字和 -）",
      "inputSchema": {"type": "object", "properties": {"id": {"type": "string"}, "source": {"type": "string"}}, "required": ["id", "source"]}},
-    {"name": "apply_rule", "description": "把规则应用到用户当前的工作流（一次可撤销的修改）", "inputSchema": {"type": "object", "properties": _rule}},
+    {"name": "civitai_apply_rule", "description": "把规则应用到用户当前的工作流（一次可撤销的修改）", "inputSchema": {"type": "object", "properties": _rule}},
 ]
 
 

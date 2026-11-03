@@ -63,12 +63,12 @@ claude mcp add --transport http civitai-fill http://127.0.0.1:8188/civitai-fill/
 | 工具 | 说明 |
 |---|---|
 | `civitai_inspect(url)` | 解析作品 |
-| `get_rule_spec()` | 规则规范和示例规则 |
-| `get_current_workflow()` | 当前工作流快照：节点、控件、连线、本机模型 |
-| `list_rules()` / `get_rule(id)` | 已有规则 |
-| `dry_run_rule(source\|id, url\|report)` | 试运行：修改预览、提醒、缺少的模型，不改动工作流 |
-| `save_rule(id, source)` | 保存规则 |
-| `apply_rule(source\|id, url\|report)` | 应用到当前工作流（可撤销） |
+| `civitai_rule_spec()` | 规则规范和示例规则 |
+| `civitai_workflow_snapshot()` | 当前工作流快照：节点、控件、连线、本机模型 |
+| `civitai_list_rules()` / `civitai_get_rule(id)` | 已有规则 |
+| `civitai_dry_run_rule(source\|id, url\|report)` | 试运行：修改预览、提醒、缺少的模型，不改动工作流 |
+| `civitai_save_rule(id, source)` | 保存规则 |
+| `civitai_apply_rule(source\|id, url\|report)` | 应用到当前工作流（可撤销） |
 
 Claude Code 等可以配合 [skills/civitai-comfyui-rules/SKILL.md](skills/civitai-comfyui-rules/SKILL.md) 使用。
 
@@ -98,6 +98,6 @@ node tests/browser-check.mjs --cdp /path/to/browser-automate/scripts/cdp.mjs --c
 
 ## 与 ComfyUI-Copilot
 
-上游 ComfyUI-Copilot 的 MCP 服务器写死在代码里，不能直接加载本插件的工具。插件自带「AI 生成规则」，
-不依赖 Copilot；要让 Copilot 侧栏也能读写规则，可以在自己维护的 Copilot 适配（如 comfy-separate 的 Copilot 服务）里
-接入本插件的 MCP 地址。
+用我们维护的 Copilot fork（同目录的 `../ComfyUI-Copilot`，即 `painterner/ComfyUI-Copilot` 的 `maintained` 分支）时，
+Copilot 会自动发现本插件的 `/civitai-fill/mcp`，不用配置：在 Copilot 聊天里就能让它解析作品、读规范、写规则、
+试运行、保存和应用（工具名都以 `civitai_` 开头）。上游 Copilot 的 MCP 服务器写死，不能加载本插件。

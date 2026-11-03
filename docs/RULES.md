@@ -113,7 +113,7 @@ export default function apply(report, wf, h) {
 
 ## 编写建议（给 AI 和人）
 
-1. 先用 `get_current_workflow` 看节点类型、标题、控件名和连线；控件名以快照为准，不要猜。
+1. 先用 `civitai_workflow_snapshot` 看节点类型、标题、控件名和连线；控件名以快照为准，不要猜。
 2. 优先通过连线定位节点（如 `h.positive(sampler)`），而不是依赖节点 ID，规则才能复用到同类工作流。
 3. 多个同类节点时用 `title` 或连线区分（如高清修复的第二个 KSampler 用第二阶段参数 `h.params(stage.id)`）。
 4. 只设置 report 里有的参数；不要编造值。

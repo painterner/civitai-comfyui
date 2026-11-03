@@ -87,13 +87,13 @@ async def tool_apply(args):
 
 TOOLS = {
     "civitai_inspect": lambda args: maihub.inspect(store.settings(), args.get("url")),
-    "get_rule_spec": tool_spec,
-    "get_current_workflow": lambda _args: bridge.call("snapshot"),
-    "list_rules": lambda _args: _async(store.list_rules()),
-    "get_rule": lambda args: _async(store.get_rule(args.get("id"))),
-    "dry_run_rule": tool_dry_run,
-    "save_rule": lambda args: _async(store.save_rule(args.get("id"), args.get("source"))),
-    "apply_rule": tool_apply,
+    "civitai_rule_spec": tool_spec,
+    "civitai_workflow_snapshot": lambda _args: bridge.call("snapshot"),
+    "civitai_list_rules": lambda _args: _async(store.list_rules()),
+    "civitai_get_rule": lambda args: _async(store.get_rule(args.get("id"))),
+    "civitai_dry_run_rule": tool_dry_run,
+    "civitai_save_rule": lambda args: _async(store.save_rule(args.get("id"), args.get("source"))),
+    "civitai_apply_rule": tool_apply,
 }
 
 

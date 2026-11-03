@@ -73,13 +73,13 @@ try {
   report.undo = 'one step restored the workflow';
 
   // Agents through the open tab (MCP).
-  const snapshot = await mcp('get_current_workflow');
+  const snapshot = await mcp('civitai_workflow_snapshot');
   assert.ok(snapshot.nodes.some(n => n.type === 'KSampler') && snapshot.models.loras.length > 0);
   const inspected = await mcp('civitai_inspect', { url: values.url });
-  const dry = await mcp('dry_run_rule', { id: 'generic', report: inspected });
+  const dry = await mcp('civitai_dry_run_rule', { id: 'generic', report: inspected });
   assert.ok(dry.ops.length > 5 && dry.missing.length === 1);
   assert.equal(await tab.eval(widget('KSampler', 'steps')), original.steps, 'an MCP dry run changes nothing');
-  await mcp('apply_rule', { id: 'generic', url: values.url });
+  await mcp('civitai_apply_rule', { id: 'generic', url: values.url });
   await tab.wait(`${widget('KSampler', 'steps')}===25`, { timeout: 15000 });
   await tab.eval(`${A}.extensionManager.command.execute('Comfy.Undo')`);
   await tab.wait(`${widget('KSampler', 'steps')}===${original.steps}`, { timeout: 15000 });
@@ -105,7 +105,7 @@ try {
     report.aiFixed = await tab.eval(`document.querySelector('#cf-ai-status').textContent`);
     await tab.eval(`(()=>{document.querySelector('#cf-rule-id').value='browser-check-ai';document.querySelector('#cf-code-save').click();})()`);
     await tab.wait(`[...document.querySelectorAll('#cf-rule option')].some(o=>o.value==='browser-check-ai')`, { timeout: 30000 });
-    report.aiSaved = (await mcp('list_rules')).some(r => r.id === 'browser-check-ai');
+    report.aiSaved = (await mcp('civitai_list_rules')).some(r => r.id === 'browser-check-ai');
     await fetch(comfy + '/civitai-fill/rules/browser-check-ai', { method: 'DELETE' });
   }
   if (values.screenshot) {

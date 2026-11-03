@@ -72,16 +72,16 @@ async def test_mcp():
 
     async def broken(_args):
         raise BridgeError("没有打开的 ComfyUI 页面")
-    tools = {"civitai_inspect": inspect, "get_current_workflow": broken}
+    tools = {"civitai_inspect": inspect, "civitai_workflow_snapshot": broken}
     init = await mcp.handle({"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2025-03-26"}}, tools)
     assert init["result"]["protocolVersion"] == "2025-03-26" and init["result"]["capabilities"]["tools"]
     assert await mcp.handle({"jsonrpc": "2.0", "method": "notifications/initialized"}, tools) is None
     listed = await mcp.handle({"jsonrpc": "2.0", "id": 2, "method": "tools/list"}, tools)
-    assert [t["name"] for t in listed["result"]["tools"]] == ["civitai_inspect", "get_rule_spec", "get_current_workflow", "list_rules",
-                                                              "get_rule", "dry_run_rule", "save_rule", "apply_rule"]
+    assert [t["name"] for t in listed["result"]["tools"]] == ["civitai_inspect", "civitai_rule_spec", "civitai_workflow_snapshot", "civitai_list_rules",
+                                                              "civitai_get_rule", "civitai_dry_run_rule", "civitai_save_rule", "civitai_apply_rule"]
     called = await mcp.handle({"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "civitai_inspect", "arguments": {"url": "u"}}}, tools)
     assert json.loads(called["result"]["content"][0]["text"]) == {"imageId": "1"} and calls == [{"url": "u"}]
-    failed = await mcp.handle({"jsonrpc": "2.0", "id": 4, "method": "tools/call", "params": {"name": "get_current_workflow"}}, tools)
+    failed = await mcp.handle({"jsonrpc": "2.0", "id": 4, "method": "tools/call", "params": {"name": "civitai_workflow_snapshot"}}, tools)
     assert failed["result"]["isError"] and "ComfyUI" in failed["result"]["content"][0]["text"]
     assert (await mcp.handle({"jsonrpc": "2.0", "id": 5, "method": "tools/call", "params": {"name": "nope"}}, tools))["error"]["code"] == -32602
     assert (await mcp.handle({"jsonrpc": "2.0", "id": 6, "method": "nope"}, tools))["error"]["code"] == -32601

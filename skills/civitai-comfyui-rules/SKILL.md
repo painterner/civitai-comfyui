@@ -11,8 +11,8 @@ executed by the user's open ComfyUI browser tab; if they fail with "没有打开
 
 ## Workflow
 
-1. `get_rule_spec` — read the rule format and the `wf` / `h` API once. Follow it exactly; do not invent helpers.
-2. `get_current_workflow` — node types, titles, widget names and values, links (`inputs[].from = "nodeId:slot"`),
+1. `civitai_rule_spec` — read the rule format and the `wf` / `h` API once. Follow it exactly; do not invent helpers.
+2. `civitai_workflow_snapshot` — node types, titles, widget names and values, links (`inputs[].from = "nodeId:slot"`),
    and local model lists. Widget names come from here, not from memory.
 3. `civitai_inspect(url)` if you have a Civitai URL — the report the rule will receive. Without one, write the rule
    against the report schema in the spec.
@@ -20,10 +20,10 @@ executed by the user's open ComfyUI browser tab; if they fail with "没有打开
    `export default function apply(report, wf, h)`. Locate nodes through links (`h.positive(sampler)`,
    `node.input('model')`, `node.consumers('MODEL')`) rather than node IDs so the rule fits similar workflows.
    Set only values the report has; `set(name, undefined)` is ignored by design.
-5. `dry_run_rule({source, url | report})` — fix every warning about missing widgets, combo values, inputs/outputs or
+5. `civitai_dry_run_rule({source, url | report})` — fix every warning about missing widgets, combo values, inputs/outputs or
    node types, then run again until clean. `missing` lists models the user does not have; that is information, not an error.
-6. `save_rule({id, source})` — lowercase id with `-`, e.g. `flux-hires`. Built-in ids cannot be overwritten.
-7. Only if the user asked to fill the workflow: `apply_rule({id, url})`. It changes their open workflow (one undo step).
+6. `civitai_save_rule({id, source})` — lowercase id with `-`, e.g. `flux-hires`. Built-in ids cannot be overwritten.
+7. Only if the user asked to fill the workflow: `civitai_apply_rule({id, url})`. It changes their open workflow (one undo step).
 
 ## Rules of thumb
 

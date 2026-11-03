@@ -7,9 +7,11 @@ ComfyUI 插件：输入 Civitai 作品地址，经 MaiHub「Civitai 资源解析
 ## 安装
 
 ```bash
-ln -s /home/ka/all/ai-lib/comfyui/civitai-comfyui /path/to/ComfyUI/custom_nodes/civitai-comfyui
+git clone git@github.com:painterner/civitai-comfyui.git /path/to/ComfyUI/custom_nodes/civitai-comfyui
 # 重启 ComfyUI。插件只依赖 ComfyUI 自带的 aiohttp，不需要额外安装。
 ```
+
+本地开发时也可以把工作副本链接进去：`ln -s <工作副本> /path/to/ComfyUI/custom_nodes/civitai-comfyui`。
 
 左侧栏出现「Civitai 填充」。第一次打开会展开「设置」：
 
@@ -98,6 +100,6 @@ node tests/browser-check.mjs --cdp /path/to/browser-automate/scripts/cdp.mjs --c
 
 ## 与 ComfyUI-Copilot
 
-用我们维护的 Copilot fork（同目录的 `../ComfyUI-Copilot`，即 `painterner/ComfyUI-Copilot` 的 `maintained` 分支）时，
+用我们维护的 Copilot fork（[painterner/ComfyUI-Copilot](https://github.com/painterner/ComfyUI-Copilot) 的 `maintained` 分支）时，
 Copilot 会自动发现本插件的 `/civitai-fill/mcp`，不用配置：在 Copilot 聊天里就能让它解析作品、读规范、写规则、
 试运行、保存和应用（工具名都以 `civitai_` 开头）。上游 Copilot 的 MCP 服务器写死，不能加载本插件。

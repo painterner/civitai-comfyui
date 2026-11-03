@@ -1,0 +1,9 @@
+{
+  "name": "civitai-comfyui",
+  "private": true,
+  "type": "module",
+  "description": "Civitai 填充：用 Civitai 作品参数填充当前 ComfyUI 工作流（ComfyUI 插件）",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs && ${PYTHON:-python3} tests/backend_test.py"
+  }
+}
